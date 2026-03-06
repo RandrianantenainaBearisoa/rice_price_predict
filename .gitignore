@@ -1,0 +1,21 @@
+# Environnement virtuel
+.venv/
+env/
+__pycache__/
+*.pyc
+uv.lock
+
+# Données (On laisse DVC gérer ça)
+data/raw/*
+data/processed/*
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+
+# Secrets et Logs
+.env
+*.log
+database/*.db
+
+# IDE
+.vscode/
+.idea/
