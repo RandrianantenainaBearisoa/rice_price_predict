@@ -60,6 +60,14 @@ def get_ingestion_destination() -> str:
     """
     return load_config_file("config/data_config.yaml")["data_destination"]["ingestion"]
 
+def get_cleaning_destination() -> str:
+    """
+    Returns the data destination for the cleaning process
+    Returns:
+        str: data destination for the cleaning process
+    """
+    return load_config_file("config/data_config.yaml")["data_destination"]["cleaning"]
+
 def check_file_exist(file_name: str, folder: str) -> bool:
     """
     Check if a file exists in the specified folder

@@ -1,4 +1,4 @@
-from src.core.utils.helpers import download_file, load_config_file, get_data_sources, check_file_exist, get_ingestion_destination
+from src.core.utils.helpers import download_file, get_cleaning_destination, load_config_file, get_data_sources, check_file_exist, get_ingestion_destination
 
 def test_load_config_file():
     config = load_config_file("config/data_config.yaml")
@@ -7,6 +7,10 @@ def test_load_config_file():
 def test_get_data_sources():
     data_sources = get_data_sources()
     assert data_sources[0]["format"] == "csv"
+
+def test_get_cleaning_destination():
+    cleaning_destination = get_cleaning_destination()
+    assert cleaning_destination == "data/data_warehouse"
 
 def test_download_file(tmp_path):
     data_sources = get_data_sources()

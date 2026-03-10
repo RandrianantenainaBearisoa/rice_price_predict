@@ -7,3 +7,4 @@ data_sources:
         format: xlsx
 data_destination:
     ingestion: data/data_lake
+    cleaning: data/data_warehouse

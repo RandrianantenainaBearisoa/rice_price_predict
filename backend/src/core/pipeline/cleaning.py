@@ -1,43 +1,62 @@
 import pandas as pd
 from datetime import datetime
 import numpy as np
+from src.core.utils.helpers import get_cleaning_destination
 
-def process_fuel_prices(file_path: str) -> pd.DataFrame:
+def process_fuel_prices() -> pd.DataFrame:
     """Loads and cleans fuel price data."""
-    gasoline = pd.read_excel(file_path, sheet_name="Regular Gasoline (below RON 95)").iloc[67]
-    diesel = pd.read_excel(file_path, sheet_name="Diesel").iloc[101]
-    kerosene = pd.read_excel(file_path, sheet_name="Kerosene").iloc[34]
 
-    df = pd.DataFrame({
-        "date": gasoline.index[4:].values,
-        "gasoline_price": gasoline[4:].values.astype(float),
-        "diesel_price": diesel[2:115].values.astype(float),
-        "kerosene_price": kerosene[2:].values.astype(float)
+    file_path = 'data/data_lake/global_fuel_price.xlsx'
+
+    gasoline_data = pd.read_excel(file_path, sheet_name="Regular Gasoline (below RON 95)")
+    gasoline_price = gasoline_data[gasoline_data["Country"] == "Madagascar"]
+
+    diesel_data = pd.read_excel(file_path, sheet_name="Diesel")
+    diesel_price = diesel_data[diesel_data["Diesel (LCU/liter)"] == "Madagascar"]
+
+    kerosene_data = pd.read_excel(file_path, sheet_name="Kerosene")
+    kerosene_price = kerosene_data[kerosene_data["Kerosene (LCU/liter)"] == "Madagascar"]
+
+    keys_date = [date for date in gasoline_price.keys() if isinstance(date, datetime)]
+
+    mdg_fuel_data = pd.DataFrame({
+        "date": keys_date,
+        "gasoline_price": gasoline_price[keys_date].values.flatten().astype(float),
+        "diesel_price": diesel_price[keys_date].values.flatten().astype(float),
+        "kerosene_price": kerosene_price[keys_date].values.flatten().astype(float)
     })
 
-    return df.ffill().bfill()
+    return mdg_fuel_data.ffill().bfill()
 
-def process_rice_prices(file_path: str, start_date, end_date) -> pd.DataFrame:
+def process_rice_prices(start_date, end_date) -> pd.DataFrame:
     """Filters rice price data for a given period."""
-    df = pd.read_csv(file_path)
+
+    file_path = 'data/data_lake/mdg_food_price.csv'
+
+    mdg_rice_data = pd.read_csv(file_path)
     
-    mask = (df["commodity"].str.contains("Rice")) & \
-           (df["date"] >= str(start_date)) & \
-           (df["date"] <= str(end_date))
-    return df[mask]
+    mask = (mdg_rice_data["commodity"].str.contains("Rice")) & \
+           (mdg_rice_data["date"] >= str(start_date)) & \
+           (mdg_rice_data["date"] <= str(end_date))
+    
+    return mdg_rice_data[mask].ffill().bfill()
 
 def run_data_preparing():
-    INPUT_FUEL = 'data/data_lake/global_fuel_price.xlsx'
-    INPUT_FOOD = 'data/data_lake/mdg_food_price.csv'
-    OUTPUT_FOLDER = 'data/data_warehouse/'
+    try:
+        print("Starting data cleaning and preparation...")
 
-    fuel_df = process_fuel_prices(INPUT_FUEL)
-    
-    rice_df = process_rice_prices(
-        INPUT_FOOD, 
-        start_date=fuel_df.iloc[0]["date"], 
-        end_date=fuel_df.iloc[-1]["date"]
-    )
+        OUTPUT_FOLDER = get_cleaning_destination() + "/"
 
-    fuel_df.to_csv(f"{OUTPUT_FOLDER}prepared_fuel_price.csv", index=False)
-    rice_df.to_csv(f"{OUTPUT_FOLDER}prepared_rice_price.csv", index=False)
+        mdg_fuel_data = process_fuel_prices()
+        
+        mdg_rice_data = process_rice_prices(
+            start_date=mdg_fuel_data.iloc[0]["date"], 
+            end_date=mdg_fuel_data.iloc[-1]["date"]
+        )
+
+        mdg_fuel_data.to_csv(f"{OUTPUT_FOLDER}mdg_fuel_data.csv", index=False)
+        mdg_rice_data.to_csv(f"{OUTPUT_FOLDER}mdg_rice_price.csv", index=False)
+
+        print(f"✅ Data ready for EDA and Modeling in {OUTPUT_FOLDER}.")
+    except Exception as e:
+        print(f"💥 An unexpected error occurred: {e}")
