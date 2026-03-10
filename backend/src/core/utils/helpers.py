@@ -1,6 +1,7 @@
 import requests
 from pathlib import Path
 import yaml
+from src.core.utils.TerminalSpinner import TerminalSpinner
 
 def download_file(url: str, filename: str, destination: str) -> None:
     """
@@ -14,13 +15,14 @@ def download_file(url: str, filename: str, destination: str) -> None:
     Raises:
         HTTPError: if there is an error regarding the download source.
     """
-    destination.mkdir(parents=True, exist_ok=True)
-    
-    response = requests.get(url)
-    response.raise_for_status()
-    
-    with open(destination / filename, "wb") as f:
-        f.write(response.content)
+    with TerminalSpinner(f"Downloading {filename}"):
+        destination.mkdir(parents=True, exist_ok=True)
+        
+        response = requests.get(url)
+        response.raise_for_status()
+        
+        with open(destination / filename, "wb") as f:
+            f.write(response.content)
 
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
 
