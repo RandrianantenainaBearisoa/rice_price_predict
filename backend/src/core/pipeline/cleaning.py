@@ -34,10 +34,12 @@ def process_rice_prices(start_date, end_date) -> pd.DataFrame:
     file_path = 'data/data_lake/mdg_food_price.csv'
 
     mdg_rice_data = pd.read_csv(file_path)
+
+    mdg_rice_data["date"] = pd.to_datetime(mdg_rice_data["date"])
     
     mask = (mdg_rice_data["commodity"].str.contains("Rice")) & \
-           (mdg_rice_data["date"] >= str(start_date)) & \
-           (mdg_rice_data["date"] <= str(end_date))
+           (mdg_rice_data["date"] >= start_date) & \
+           (mdg_rice_data["date"] <= end_date)
     
     return mdg_rice_data[mask].ffill().bfill()
 
@@ -54,8 +56,14 @@ def run_data_preparing():
             end_date=mdg_fuel_data.iloc[-1]["date"]
         )
 
-        mdg_fuel_data.to_csv(f"{OUTPUT_FOLDER}mdg_fuel_data.csv", index=False)
-        mdg_rice_data.to_csv(f"{OUTPUT_FOLDER}mdg_rice_price.csv", index=False)
+        rice_and_fuel_price = pd.merge_asof(
+            mdg_rice_data.sort_values('date'), 
+            mdg_fuel_data.sort_values('date'), 
+            on='date', 
+            direction='backward'
+        )
+
+        rice_and_fuel_price.to_csv(f"{OUTPUT_FOLDER}mdg_rice_and_fuel_price.csv", index=False)
 
         print(f"✅ Data ready for EDA and Modeling in {OUTPUT_FOLDER}.")
     except Exception as e:

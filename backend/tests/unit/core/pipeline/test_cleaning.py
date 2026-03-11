@@ -6,8 +6,8 @@ from src.core.pipeline.cleaning import process_fuel_prices, process_rice_prices,
 
 # --- TESTS FOR FUEL PRICES ---
 
-@patch("pandas.read_excel")
-def test_process_fuel_prices(mock_read_excel):
+@patch("pandas.read_excel") # This decorator replaces the read_excel function with a fake object for the duration of the test
+def test_process_fuel_prices(mock_read_excel): # the @patch deco effect is applied to the function by this argument
     # 1. Fake excel data simulating the structure of the fuel price sheets
     date_cols = [datetime(2024, 1, 1), datetime(2024, 2, 1)]
     fake_data = pd.DataFrame({
@@ -18,7 +18,7 @@ def test_process_fuel_prices(mock_read_excel):
         date_cols[1]: [5200]
     })
 
-    # Simulate the read_excel function to return the same fake data for all sheets
+    # Here , we specify that whenever read_excel is called, it should return the fake exvel data created above.
     mock_read_excel.return_value = fake_data
 
     # 2. Call the function
@@ -50,24 +50,38 @@ def test_process_rice_prices(mock_read_csv):
     assert all(result["commodity"].str.contains("Rice"))
 
 # --- TEST FOR run_data_preparing ---
-
+    
 def test_run_data_preparing(tmp_path):
     # 1. Create a temporary output directory
     output_dir = tmp_path / "data_warehouse"
     output_dir.mkdir()
 
     # 2. Mock the internal functions to avoid actual file I/O and data processing
+    # Note : We patch the functions in the cleaning module, not preparing, since they are defined there
     with patch("src.core.pipeline.cleaning.process_fuel_prices") as mock_fuel, \
          patch("src.core.pipeline.cleaning.process_rice_prices") as mock_rice, \
          patch("src.core.pipeline.cleaning.get_cleaning_destination", return_value=str(output_dir)):
         
         # Fake return data
-        mock_fuel.return_value = pd.DataFrame({"date": ["2024-01-01"], "gasoline_price": [5000]})
-        mock_rice.return_value = pd.DataFrame({"date": ["2024-01-01"], "price": [2500]})
+        mock_fuel.return_value = pd.DataFrame({
+            "date": pd.to_datetime(["2024-01-01"]), 
+            "gasoline_price": [5000]
+        })
+        
+        mock_rice.return_value = pd.DataFrame({
+            "date": pd.to_datetime(["2024-01-01"]), 
+            "price": [2500],
+            "commodity": ["Rice"]
+        })
 
         # Execute the function
         run_data_preparing()
 
-        # 3. Assertions to check if the output files are created
-        assert (output_dir / "mdg_fuel_data.csv").exists()
-        assert (output_dir / "mdg_rice_price.csv").exists()
+        # 3. Assertions to check if the output file is created
+        expected_file = output_dir / "mdg_rice_and_fuel_price.csv"
+        assert expected_file.exists()
+        
+        # 4. Check the content of the resulting file
+        result_df = pd.read_csv(expected_file)
+        assert "gasoline_price" in result_df.columns
+        assert "price" in result_df.columns
