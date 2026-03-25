@@ -56,7 +56,7 @@ def test_process_world_market_prices():
 
     # assertions
     assert isinstance(result, pd.DataFrame)
-    assert [str(dtyp) for dtyp in result.dtypes.to_list()] == ['datetime64[us]', 'float64', 'float64', 'float64', 'float64', 'float64']
+    assert [str(dtyp) for dtyp in result.dtypes.to_list()] == ['datetime64[ns]', 'float64', 'float64', 'float64', 'float64', 'float64']
     assert int(result.isnull().sum().sum()) == 0
 
 # --- TEST FOR run_data_preparing ---
