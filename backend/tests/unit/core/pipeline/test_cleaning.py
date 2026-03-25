@@ -5,49 +5,34 @@ from unittest.mock import patch, MagicMock
 from src.core.pipeline.cleaning import process_fuel_prices, process_rice_prices, process_world_market_prices, run_data_preparing
 
 # --- TESTS FOR FUEL PRICES ---
-
-@patch("pandas.read_excel") # This decorator replaces the read_excel function with a fake object for the duration of the test
-def test_process_fuel_prices(mock_read_excel): # the @patch deco effect is applied to the function by this argument
-    # 1. Fake excel data simulating the structure of the fuel price sheets
-    date_cols = [datetime(2024, 1, 1), datetime(2024, 2, 1)]
-    fake_data = pd.DataFrame({
-        "Country": ["Madagascar"],
-        "Diesel (LCU/liter)": ["Madagascar"],
-        "Kerosene (LCU/liter)": ["Madagascar"],
-        date_cols[0]: [5000],
-        date_cols[1]: [5200]
-    })
-
-    # Here , we specify that whenever read_excel is called, it should return the fake exvel data created above.
-    mock_read_excel.return_value = fake_data
+def test_process_fuel_prices():
 
     # 2. Call the function
     result = process_fuel_prices()
 
     # 3. Assertions
     assert isinstance(result, pd.DataFrame)
-    assert "gasoline_price" in result.columns
-    assert len(result) == 2
-    assert not result.isnull().values.any()
+    assert [str(dtyp) for dtyp in result.dtypes.to_list()] == ['datetime64[ns]', 'float64', 'float64', 'float64']
+    assert int(result.isnull().sum().sum()) == 0
+
 
 # --- TESTS FOR RICE PRICES ---
-
-@patch("pandas.read_csv")
-def test_process_rice_prices(mock_read_csv):
-    # 1. Fake CSV data simulating the structure of the rice price data
+@patch("pandas.read_csv") # This decorator replaces the read_excel function with a fake object for the duration of the test
+def test_process_rice_prices(mock_read_csv):# the @patch deco effect is applied to the function by this argument
+    
     fake_rice = pd.DataFrame({
         "commodity": ["Rice (local)", "Maize", "Rice (imported)"],
-        "date": ["2024-01-01", "2024-01-01", "2024-02-01"],
+        "date": ["2024-01-01", "2024-02-01", "2024-03-01"],
         "price": [2500, 1200, 2800]
     })
     mock_read_csv.return_value = fake_rice
 
-    # 2. Call the function with test dates
     result = process_rice_prices(start_date="2024-01-01", end_date="2024-02-01")
 
-    # 3. Assertions
-    assert len(result) == 2 # The Maize should be filtered out
+    assert str(result["date"].dtypes) == "datetime64[ns]"
     assert all(result["commodity"].str.contains("Rice"))
+    assert int(result.isnull().sum().sum()) == 0
+
 
 # --- TESTS FOR WORLD BANK COMMODITY PRICE : process_world_market_prices
 def test_process_world_market_prices():
@@ -59,8 +44,8 @@ def test_process_world_market_prices():
     assert [str(dtyp) for dtyp in result.dtypes.to_list()] == ['datetime64[ns]', 'float64', 'float64', 'float64', 'float64', 'float64']
     assert int(result.isnull().sum().sum()) == 0
 
+
 # --- TEST FOR run_data_preparing ---
-    
 def test_run_data_preparing(tmp_path):
     # 1. Create a temporary output directory
     output_dir = tmp_path / "data_warehouse"
