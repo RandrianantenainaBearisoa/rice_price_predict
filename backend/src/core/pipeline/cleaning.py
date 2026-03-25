@@ -43,6 +43,28 @@ def process_rice_prices(start_date, end_date) -> pd.DataFrame:
     
     return mdg_rice_data[mask].ffill().bfill()
 
+def process_world_market_prices() -> pd.DataFrame:
+    """Get the usefull features from the world bank commodity price file."""
+
+    file_path = 'data/data_lake/worldbank_commodity_price.xlsx'
+
+    wrld_com_prices = pd.read_excel(file_path, "Monthly Prices", skiprows=4)
+    wrld_com_prices = wrld_com_prices.iloc[1:].reset_index(drop=True)
+
+    wrld_com_prices["date"] = pd.to_datetime([f"{date_str.replace('M', '-')}-01" for date_str in wrld_com_prices["Unnamed: 0"].values])
+
+    col_names = ["date", 'Phosphate rock', 'DAP', 'TSP', 'Urea', 'Potassium chloride']
+
+    wrld_fertilz_prices = wrld_com_prices[["date", 'Phosphate rock', 'DAP', 'TSP', 'Urea ', 'Potassium chloride **']].copy()
+    wrld_fertilz_prices.columns = col_names
+    
+    for col in col_names[1:]:
+        wrld_fertilz_prices[col] = pd.to_numeric(wrld_fertilz_prices[col], errors='coerce') # ... -> NaN
+
+    wrld_fertilz_prices[col_names[1:]] = wrld_fertilz_prices[col_names[1:]].interpolate(method="linear", limit_direction="both")
+    
+    return wrld_fertilz_prices
+
 def run_data_preparing():
     try:
         print("Starting data cleaning and preparation...")
@@ -56,6 +78,8 @@ def run_data_preparing():
             end_date=mdg_fuel_data.iloc[-1]["date"]
         )
 
+        wrld_fertilz_prices = process_world_market_prices()
+
         rice_and_fuel_price = pd.merge_asof(
             mdg_rice_data.sort_values('date'), 
             mdg_fuel_data.sort_values('date'), 
@@ -63,7 +87,14 @@ def run_data_preparing():
             direction='backward'
         )
 
-        rice_and_fuel_price.to_csv(f"{OUTPUT_FOLDER}mdg_rice_and_fuel_price.csv", index=False)
+        rice_data = pd.merge_asof(
+            rice_and_fuel_price.sort_values('date'),
+            wrld_fertilz_prices.sort_values('date'),
+            on='date',
+            direction='backward'
+        )
+
+        rice_data.to_csv(f"{OUTPUT_FOLDER}mdg_rice_data.csv", index=False)
 
         print(f"✅ Data ready for EDA and Modeling in {OUTPUT_FOLDER}.")
     except Exception as e:

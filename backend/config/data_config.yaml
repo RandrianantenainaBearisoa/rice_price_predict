@@ -5,6 +5,9 @@ data_sources:
       - name: global_fuel_price.xlsx
         url: https://datacatalogfiles.worldbank.org/ddh-published/0066829/DR0095290/Global_Fuel_Prices_Database.xlsx
         format: xlsx
+      - name: worldbank_commodity_price.xlsx
+        url: https://thedocs.worldbank.org/en/doc/74e8be41ceb20fa0da750cda2f6b9e4e-0050012026/related/CMO-Historical-Data-Monthly.xlsx
+        format: xlsx
 data_destination:
     ingestion: data/data_lake
     cleaning: data/data_warehouse
