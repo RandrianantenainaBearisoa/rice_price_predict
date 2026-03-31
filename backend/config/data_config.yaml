@@ -11,3 +11,4 @@ data_sources:
 data_destination:
     ingestion: data/data_lake
     cleaning: data/data_warehouse
+    feature_store: data/feature_store
