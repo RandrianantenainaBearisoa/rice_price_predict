@@ -4,8 +4,6 @@ import numpy as np
 from sklearn.preprocessing import PowerTransformer
 from src.core.utils.helpers import get_feature_store_destination
 
-# ,latitude,DAP,market_id,gasoline_price,diesel_price,usdmga,admin1,pricetype,commodity,price_transformed,month
-
 def get_currency_data():
     usd_mga_exchange = yf.download("USDMGA=X", start="2015-01-01", end="2026-03-24")
 

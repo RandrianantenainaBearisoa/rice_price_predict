@@ -1,4 +1,4 @@
-from src.core.utils.helpers import download_file, get_cleaning_destination, load_config_file, get_data_sources, check_file_exist, get_ingestion_destination, get_categorical_columns, get_feature_store_destination
+from src.core.utils.helpers import download_file, get_cleaning_destination, load_config_file, get_data_sources, check_file_exist, get_ingestion_destination, get_categorical_columns, get_feature_store_destination, get_random_state
 import pandas as pd
 
 def test_load_config_file():
@@ -37,3 +37,7 @@ def test_get_categorical_columns():
     })
     categorical_columns = get_categorical_columns(df)
     assert categorical_columns == ["categorical_col", "mixed_col"]
+
+def test_get_random_state():
+    random_state = get_random_state()
+    assert random_state == 42

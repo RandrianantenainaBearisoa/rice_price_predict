@@ -91,3 +91,7 @@ def check_file_exist(file_name: str, folder: str) -> bool:
 def get_categorical_columns(df):
     """Return the list of categorical columns in the DataFrame."""
     return df.select_dtypes(include=["object", "category"]).columns.tolist()
+
+def get_random_state():
+    """Return the random state for reproducibility."""
+    return load_config_file("config/train_config.yaml")["random_state"]
