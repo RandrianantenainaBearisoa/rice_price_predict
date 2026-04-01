@@ -1,4 +1,4 @@
-from src.core.utils.helpers import download_file, get_cleaning_destination, load_config_file, get_data_sources, check_file_exist, get_ingestion_destination, get_categorical_columns, get_feature_store_destination, get_random_state
+from src.core.utils.helpers import download_file, get_cleaning_destination, load_config_file, get_data_sources, check_file_exist, get_ingestion_destination, get_categorical_columns, get_feature_store_destination, get_random_state, get_model_storage_location, delete_directory
 import pandas as pd
 
 def test_load_config_file():
@@ -41,3 +41,18 @@ def test_get_categorical_columns():
 def test_get_random_state():
     random_state = get_random_state()
     assert random_state == 42
+
+def test_get_model_storage_location():
+    model_storage_location = get_model_storage_location()
+    assert model_storage_location == "model/"
+
+def test_delete_directory(tmp_path):
+    directory_to_delete = tmp_path / "test_directory"
+    directory_to_delete.mkdir()
+    (directory_to_delete / "subdir").mkdir()
+
+    assert directory_to_delete.exists()
+
+    delete_directory(tmp_path, "test_directory")
+
+    assert not directory_to_delete.exists()

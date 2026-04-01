@@ -1,3 +1,4 @@
+import shutil
 import requests
 from pathlib import Path
 import yaml
@@ -95,3 +96,23 @@ def get_categorical_columns(df):
 def get_random_state():
     """Return the random state for reproducibility."""
     return load_config_file("config/train_config.yaml")["random_state"]
+
+def get_model_storage_location():
+    """Return the location where the model should be stored."""
+    return load_config_file("config/train_config.yaml")["current_model_storage"]
+
+def delete_directory(directory_path: str, directory_name: str) -> None:
+    """
+    Deletes the specified directory and its contents.
+    Args:
+        directory_path (str): The path of the directory that contains the directory to delete.
+        directory_name (str): The name of the directory to delete.
+    Returns:
+        None
+    Raises:
+        FileNotFoundError: If the specified directory does not exist.
+    """
+    folder_path = Path(directory_path)
+    for entry in folder_path.iterdir():
+        if entry.name == directory_name and entry.is_dir():
+            shutil.rmtree(entry)
