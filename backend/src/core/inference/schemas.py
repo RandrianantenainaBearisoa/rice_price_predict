@@ -1,5 +1,8 @@
-from pydantic import BaseModel, ValidationError, PositiveFloat, field_validator
+from pydantic import BaseModel, PositiveFloat, field_validator, Field
 from enum import Enum
+import yfinance as yf
+from datetime import date, timedelta
+from functools import lru_cache
 
 class Region(str, Enum):
     Alaotra_Mangoro = 'Alaotra Mangoro'
@@ -115,10 +118,20 @@ class Month(str, Enum):
         "labels": {'fr': 'Décembre', 'en': 'December'}
         }
 
+@lru_cache(maxsize=1)
+def get_currency_month_avg(today: str = date.today()):
+    """
+    Return the average currency of the last 30 days
+    """
+    # today = date.today()
+    before = today - timedelta(days=30)
+    df = yf.download("USDMGA=X", start=before.strftime("%Y-%m-%d"), end=today.strftime("%Y-%m-%d"), auto_adjust=False)
+    return (df['Close'].mean()).item()
+
 class InferenceInput(BaseModel):
     gasoline_price: PositiveFloat
     diesel_price: PositiveFloat
-    usd_to_mga: PositiveFloat
+    usd_to_mga: PositiveFloat = Field(default_factory=get_currency_month_avg)
     region: Region
     commodity: Commodity
     month: Month
