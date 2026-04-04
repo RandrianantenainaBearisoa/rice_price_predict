@@ -1,3 +1,7 @@
 random_state: 42
-
-current_model_storage: model/
+current_model_storage: artifacts/model/
+transformation_artifact_store: artifacts/transformation/
+used_transformation: # list of the transformation that need to be reversed
+  box_cox: 
+    folder: box_cox
+    filename: box_cox.joblib
