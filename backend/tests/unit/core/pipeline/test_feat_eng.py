@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 from src.core.pipeline.feat_eng import get_currency_data, apply_boxcox_transformation, get_month_column, get_rice_data, get_applicant_features, get_applicant_dummies, get_selected_features, run_feature_engineering
-from src.core.utils.helpers import get_categorical_columns
+from src.core.utils.helpers import get_categorical_columns, check_file_exist
 from collections import Counter
 from unittest.mock import patch
 
@@ -15,15 +15,19 @@ def test_get_currency_data():
     assert currency_data["date"].dtype == "datetime64[ns]", "The 'date' column is not in datetime format."
     assert currency_data["usdmga"].dtype == "float64", "The 'usdmga' column is not in the correct format."
 
-def test_apply_boxcox_transformation():
+def test_apply_boxcox_transformation(tmp_path):
+    tmp_path = str(tmp_path)
     sample_data = pd.DataFrame({"price": [1, 2, 5, 10, 25, 50, 100, 250, 500, 1000]})
     expected_transformed = [-1.55, -1.25, -0.85, -0.55, -0.14, 0.17, 0.49, 0.91, 1.22, 1.55]
-    transformed_data = apply_boxcox_transformation(sample_data, "price")
+    with patch("src.core.pipeline.feat_eng.get_transformation_artifact_location") as mock_art_destination:
+        mock_art_destination.return_value = tmp_path
+        transformed_data = apply_boxcox_transformation(sample_data, "price")
 
-    assert transformed_data.shape == (10, 1), "The transformed data should have the same number of rows and one column."
-    assert not np.any(np.isnan(transformed_data)), "There should be no NaN values in the transformed data."
-    assert np.isfinite(transformed_data).all(), "All values in the transformed data should be finite."
-    assert np.allclose(transformed_data.flatten().round(2), expected_transformed), "The transformed values do not match the expected values within the tolerance level."
+        assert transformed_data.shape == (10, 1), "The transformed data should have the same number of rows and one column."
+        assert not np.any(np.isnan(transformed_data)), "There should be no NaN values in the transformed data."
+        assert np.isfinite(transformed_data).all(), "All values in the transformed data should be finite."
+        assert np.allclose(transformed_data.flatten().round(2), expected_transformed), "The transformed values do not match the expected values within the tolerance level."
+        assert check_file_exist("box_cox_transfo.joblib", tmp_path + "box_cox_transformation/")
 
 def test_get_month_column():
     sample_data = pd.DataFrame({"date": pd.to_datetime(["2021-01-15", "2021-02-20", "2021-03-10"])})

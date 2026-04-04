@@ -1,4 +1,4 @@
-from src.core.utils.helpers import download_file, get_cleaning_destination, load_config_file, get_data_sources, check_file_exist, get_ingestion_destination, get_categorical_columns, get_feature_store_destination, get_random_state, get_model_storage_location, delete_directory
+from src.core.utils.helpers import download_file, get_cleaning_destination, load_config_file, get_data_sources, check_file_exist, get_ingestion_destination, get_categorical_columns, get_feature_store_destination, get_random_state, get_model_storage_location, delete_directory, get_transformation_artifact_location, store_file
 import pandas as pd
 
 def test_load_config_file():
@@ -44,7 +44,11 @@ def test_get_random_state():
 
 def test_get_model_storage_location():
     model_storage_location = get_model_storage_location()
-    assert model_storage_location == "model/"
+    assert model_storage_location == "artifacts/model/"
+
+def test_get_transformation_artifact_location():
+    data_transfo_location = get_transformation_artifact_location()
+    assert data_transfo_location == "artifacts/transformation/"
 
 def test_delete_directory(tmp_path):
     directory_to_delete = tmp_path / "test_directory"

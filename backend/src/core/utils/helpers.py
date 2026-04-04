@@ -101,6 +101,10 @@ def get_model_storage_location():
     """Return the location where the model should be stored."""
     return load_config_file("config/train_config.yaml")["current_model_storage"]
 
+def get_transformation_artifact_location():
+    """Return the destination path for a transformation artifact."""
+    return load_config_file("config/train_config.yaml")["transformation_artifact_store"]
+
 def delete_directory(directory_path: str, directory_name: str) -> None:
     """
     Deletes the specified directory and its contents.

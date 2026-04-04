@@ -30,7 +30,7 @@ def test_mean_scores():
 def test_store_model_in_project():
     with patch('src.core.pipeline.training.download_artifacts') as mock_download,\
         patch('src.core.pipeline.training.get_model_storage_location') as mock_get_location:
-        location = "model/"
+        location = "artifacts/model/"
         mock_get_location.return_value = location
         store_model_in_project("test_run_id", "test_artifact_path")
         mock_download.assert_called_once_with(run_id="test_run_id", artifact_path="test_artifact_path", dst_path=location)

@@ -1,8 +1,10 @@
 import pandas as pd
 import yfinance as yf
 import numpy as np
+import joblib
+from pathlib import Path
 from sklearn.preprocessing import PowerTransformer
-from src.core.utils.helpers import get_feature_store_destination
+from src.core.utils.helpers import get_feature_store_destination, delete_directory, get_transformation_artifact_location, load_config_file
 
 def get_currency_data():
     usd_mga_exchange = yf.download("USDMGA=X", start="2015-01-01", end="2026-03-24")
@@ -23,8 +25,19 @@ def apply_boxcox_transformation(df: pd.DataFrame, column: str):
     else:
         pt = PowerTransformer(method="box-cox", standardize=True)
         target_reshaped = df[column].to_numpy().reshape(-1, 1)
+    
+    transformed_version = pt.fit_transform(target_reshaped)
 
-    return pt.fit_transform(target_reshaped)
+    file_name = load_config_file("config/train_config.yaml")["used_transformation"]['box_cox']['filename']
+    file_destination = load_config_file("config/train_config.yaml")["used_transformation"]['box_cox']['folder']
+
+    delete_directory(get_transformation_artifact_location(), file_destination)
+    destination_folder = get_transformation_artifact_location() + file_destination + "/"
+    Path.mkdir(destination_folder, exist_ok=True)
+    filename = destination_folder + file_name
+    joblib.dump(pt, filename=filename)
+
+    return transformed_version
 
 def get_month_column(df: pd.DataFrame, date_column: str):
     """Returns the column containing the month : month_i"""
