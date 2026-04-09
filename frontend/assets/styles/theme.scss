@@ -1,0 +1,28 @@
+:root {
+
+    width: 100%;
+    height: 100%;
+
+    body {
+        width: 100%;
+        height: 100%;
+        margin: 0px;
+
+        #app {
+            width: 100%;
+            height: 100%;
+        }
+
+        #app > div {
+            width: 100%;
+            height: 100%;
+        }
+    }
+
+    --font-color-00: #19501e;
+
+    --background-color-00: #e8eee9;
+    --background-color-01: #5e8562;
+    --background-color-02: #ffffff;
+    
+}
