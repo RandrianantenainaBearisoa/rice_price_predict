@@ -13,8 +13,8 @@ defineProps<{
 <style scoped>
 .error-message {
     padding: 1rem;
-    background-color: #ffebee;
-    color: #c62828;
+    background-color: var(--color-error-bg);
+    color: var(--color-error-text);
     border-radius: 4px;
     margin-bottom: 1rem;
 }

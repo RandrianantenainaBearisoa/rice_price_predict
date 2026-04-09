@@ -19,11 +19,56 @@
         }
     }
 
+    /* Legacy variables - keep for compatibility */
     --font-color-00: #19501e;
-
     --background-color-00: #e8eee9;
     --background-color-01: #5e8562;
     --background-color-02: #ffffff;
     --background-color-03: #19501e;
+
+    /* Primary Colors - Green Theme */
+    --color-primary: #19501e;
+    --color-primary-dark: #0d2d0e;
+    --color-primary-light: #5e8562;
+    --color-primary-lighter: #e8eee9;
+
+    /* Accent Color - Bright Green for buttons and highlights */
+    --color-accent: #4caf50;
+    --color-accent-dark: #45a049;
+
+    /* Text Colors */
+    --color-text-primary: #333333;
+    --color-text-secondary: #666666;
+    --color-text-light: #999999;
+    --color-text-white: #ffffff;
+    --color-text-dark: #19501e;
+
+    /* Background Colors */
+    --color-bg-white: #ffffff;
+    --color-bg-light: #f9f9f9;
+    --color-bg-lighter: #f5f5f5;
+    --color-bg-very-light: #f0f0f0;
+
+    /* Border Colors */
+    --color-border-light: #eeeeeee;
+    --color-border-lighter: #dddddd;
+    --color-border-very-light: #cccccc;
+
+    /* Error/Alert Colors */
+    --color-error-bg: #ffebee;
+    --color-error-text: #c62828;
+    --color-error-light: #ffcdd2;
+
+    /* Warning/Required Colors */
+    --color-warning: #ff9800;
+    --color-required: #d32f2f;
+
+    /* Status/UI Colors */
+    --color-disabled: #cccccc;
+    --color-focus-shadow: rgba(30, 80, 30, 0.3);
+
+    /* Gradient Colors - Hero Section */
+    --color-gradient-start: #667eea;
+    --color-gradient-end: #764ba2;
     
 }

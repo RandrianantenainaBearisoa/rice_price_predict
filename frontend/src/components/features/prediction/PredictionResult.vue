@@ -17,19 +17,19 @@ defineProps<{
 .result-container {
     margin-top: 2rem;
     padding: 1.5rem;
-    background-color: #f5f5f5;
+    background-color: var(--color-bg-lighter);
     border-radius: 4px;
-    border-left: 4px solid #4caf50;
+    border-left: 4px solid var(--color-accent);
 }
 
 .result-container h3 {
     margin-top: 0;
-    color: #333;
+    color: var(--color-text-primary);
     margin-bottom: 1rem;
 }
 
 .result-content {
-    background-color: white;
+    background-color: var(--color-bg-white);
     padding: 1rem;
     border-radius: 4px;
     overflow-x: auto;
@@ -38,6 +38,6 @@ defineProps<{
 .result-content pre {
     margin: 0;
     font-size: 0.9rem;
-    color: #333;
+    color: var(--color-text-primary);
 }
 </style>

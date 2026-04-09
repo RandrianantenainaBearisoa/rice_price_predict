@@ -75,18 +75,18 @@ defineEmits<{
     display: block;
     margin-bottom: 0.5rem;
     font-weight: 600;
-    color: #333;
+    color: var(--color-text-primary);
 }
 
 .required {
-    color: red;
+    color: var(--color-required);
     margin-left: 0.25rem;
 }
 
 .form-input {
     width: 100%;
     padding: 0.75rem;
-    border: 1px solid #ddd;
+    border: 1px solid var(--color-border-lighter);
     border-radius: 4px;
     font-size: 1rem;
     box-sizing: border-box;
@@ -94,7 +94,7 @@ defineEmits<{
 
 .form-input:focus {
     outline: none;
-    border-color: #4caf50;
+    border-color: var(--color-accent);
     box-shadow: 0 0 5px rgba(76, 175, 80, 0.3);
 }
 </style>

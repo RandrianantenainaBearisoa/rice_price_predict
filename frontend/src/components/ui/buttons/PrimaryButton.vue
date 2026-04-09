@@ -20,10 +20,9 @@ defineEmits<{
 .primary-button {
     width: 100%;
     padding: 0.75rem;
-    background-color: var(--background-color-03);
-    border: var(--background-color-00) solid 1px;
-    color: white;
-    border: none;
+    background-color: var(--color-accent);
+    color: var(--color-text-white);
+    border: var(--color-accent) solid 1px;
     border-radius: 4px;
     font-size: 1rem;
     font-weight: 600;
@@ -33,12 +32,12 @@ defineEmits<{
 
 .primary-button:hover:not(:disabled) {
     background-color: var(--background-color-00);
-    color: var(--font-color-00);
-    border: var(--font-color-00) solid 1px;
+    border-color: var(--color-accent-dark);
+    color: var(--color-text-dark);
 }
 
 .primary-button:disabled {
-    background-color: #ccc;
+    background-color: var(--color-disabled);
     cursor: not-allowed;
 }
 </style>

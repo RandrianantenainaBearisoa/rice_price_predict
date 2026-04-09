@@ -20,7 +20,7 @@ defineProps<{
 
 .features h2 {
     text-align: center;
-    color: #333;
+    color: var(--color-text-primary);
     margin-bottom: 2rem;
     font-size: 1.8rem;
 }

@@ -20,19 +20,19 @@ defineProps<{
 }
 
 .description-card {
-    background-color: #f9f9f9;
+    background-color: var(--color-bg-light);
     padding: 2rem;
     border-radius: 8px;
-    border-left: 4px solid #4caf50;
+    border-left: 4px solid var(--color-accent);
 }
 
 .description-card h2 {
     margin-top: 0;
-    color: #333;
+    color: var(--color-text-primary);
 }
 
 .description-card p {
-    color: #666;
+    color: var(--color-text-secondary);
     line-height: 1.6;
     margin: 0;
 }

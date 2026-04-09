@@ -29,19 +29,19 @@ defineEmits<{
 }
 
 .cta-card {
-    background-color: #f0f0f0;
+    background-color: var(--color-bg-very-light);
     padding: 3rem 2rem;
     border-radius: 8px;
 }
 
 .cta-card h2 {
-    color: #333;
+    color: var(--color-text-primary);
     margin-top: 0;
     margin-bottom: 0.5rem;
 }
 
 .cta-card p {
-    color: #666;
+    color: var(--color-text-secondary);
     margin-bottom: 1.5rem;
 }
 </style>
