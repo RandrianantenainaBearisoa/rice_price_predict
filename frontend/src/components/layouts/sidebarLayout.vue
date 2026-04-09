@@ -5,7 +5,6 @@ import { sidebarButton } from '../ui';
 <template>
     <div class="sidebar-button-wrapper">
         <sidebarButton label="Prediction" route-name="predict"/>
-        <sidebarButton label="Home" route-name="home" />
     </div>
 </template>
 

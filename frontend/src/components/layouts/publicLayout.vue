@@ -70,6 +70,7 @@ export default {
         }
         .view-content {
             height: 85%;
+            overflow: auto;
         }
     }
 }
