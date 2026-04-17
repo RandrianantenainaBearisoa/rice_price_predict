@@ -1,0 +1,20 @@
+services:
+  backend:
+    build: 
+      context: ./backend
+    container_name: backend
+    expose:
+      - "8000"
+    restart: always
+  
+  frontend:
+    build: 
+      context: ./frontend
+      args:
+        VITE_API_URL: /api
+    container_name: frontend-n-proxy
+    ports:
+      - "80:80"
+    restart: always
+    depends_on:
+    - backend
