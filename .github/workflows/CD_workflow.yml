@@ -12,5 +12,5 @@ jobs:
       - name: Check pwd
         run: pwd
       - name: Check ls
-        run: ls -la
+        run: ls
   
