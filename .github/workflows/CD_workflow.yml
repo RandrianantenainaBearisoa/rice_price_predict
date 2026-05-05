@@ -1,0 +1,16 @@
+name: Constant Delivery Workflow
+
+on:
+  push:
+    branches:
+      - prod
+
+jobs:
+  Deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check pwd
+        run: pwd
+      - name: Check ls
+        run: ls -la
+  
