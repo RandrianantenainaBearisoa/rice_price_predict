@@ -22,7 +22,9 @@ jobs:
         #   done
         run: |
           modified=()
-          for file in ${{ steps.changed-files.outputs.modified_files | cut -d/ -f1 | uniq }}; do
-            modified+=("$file")
+          for file in ${{ steps.changed-files.outputs.modified_files}}; do
+            top_level = "${file%%/*}"
+            modified+=("$top_level")
           done
-          echo "Modified files: ${modified[@]}"
+          unique_dirs=($(echo "${modified[@]}" | tr ' ' '\n' | sort -u | tr '\n' ' '))
+          echo "Modified files: ${unique_dirs[@]}"
