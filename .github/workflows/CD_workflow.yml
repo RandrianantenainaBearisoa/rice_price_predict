@@ -23,7 +23,7 @@ jobs:
         run: |
           modified=()
           for file in ${{ steps.changed-files.outputs.modified_files}}; do
-            top_level = "${file%%/*}"
+            top_level="${file%%/*}"
             modified+=("$top_level")
           done
           unique_dirs=($(echo "${modified[@]}" | tr ' ' '\n' | sort -u | tr '\n' ' '))
