@@ -9,7 +9,7 @@ jobs:
   Check_what_to_do:
     runs-on: ubuntu-latest
     steps:
-      # - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
       - name: Get changed files
         id: changed-files
