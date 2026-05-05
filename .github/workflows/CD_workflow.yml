@@ -22,7 +22,7 @@ jobs:
         #   done
         run: |
           modified=()
-          for file in ${{ steps.changed-files.outputs.modified_files }}; do
-            modified+=("$file") | cut -d/ -f1 | uniq
+          for file in ${{ steps.changed-files.outputs.modified_files | cut -d/ -f1 | uniq }}; do
+            modified+=("$file")
           done
           echo "Modified files: ${modified[@]}"
