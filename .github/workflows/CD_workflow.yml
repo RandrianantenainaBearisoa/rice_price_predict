@@ -41,7 +41,7 @@ jobs:
     needs: Check_what_to_do
     runs-on: ubuntu-latest
     env:
-      TO_BUILD: ${{ matrix.builds[needs.Check_what_to_do.outputs.scenario] }}
+      KEY: ${{ needs.Check_what_to_do.outputs.scenario }}
     if: needs.Check_what_to_do.outputs.scenario != '0'
     steps:
       - uses: actions/checkout@v3
@@ -53,4 +53,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       
       - name: Build and Push Image
-        run: echo "$TO_BUILD"
+        run: |
+          Service="${{ fromJSON('{"0":"0", "1":"frontend", "2":"backend", "3":""}')[${{KEY}}] }}"
+          echo "$Service"
+          echo "docker compose build $Service && docker compose push $Service"
