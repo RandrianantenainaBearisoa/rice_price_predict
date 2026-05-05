@@ -54,6 +54,6 @@ jobs:
       
       - name: Build and Push Image
         run: |
-          Service="${{ fromJSON('{"0":"0", "1":"frontend", "2":"backend", "3":""}')[${{KEY}}] }}"
+          Service="${{ fromJSON('{"0":"0", "1":"frontend", "2":"backend", "3":""}')[$KEY] }}"
           echo "$Service"
           echo "docker compose build $Service && docker compose push $Service"
