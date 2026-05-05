@@ -52,4 +52,17 @@ jobs:
       
       - name: Build and Push Image
         run: |
-          echo "${{ needs.Check_what_to_do.outputs.scenario }}"
+          case ${{ needs.Check_what_to_do.outputs.scenario }} in
+            1)
+              echo "Only frontend changed. Building and pushing frontend image..."
+              ;;
+            2)
+              echo "Only backend changed. Building and pushing backend image..."
+              ;;
+            3)
+              echo "Both frontend and backend changed. Building and pushing both images..."
+              ;;
+            *)
+              echo "No changes detected. Skipping build and push."
+              ;;
+          esac
