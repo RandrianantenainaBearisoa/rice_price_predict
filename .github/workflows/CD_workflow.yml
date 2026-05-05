@@ -33,6 +33,7 @@ jobs:
             fi
           done
           echo "scenario=$scenario" >> $GITHUB_OUTPUT
+          echo "Scenario: $scenario"
   Build_and_Push:
     strategy:
       matrix:
