@@ -23,13 +23,13 @@ jobs:
             modified+=("$top_level")
           done
           directories=($(echo "${modified[@]}" | tr ' ' '\n' | sort -u | tr '\n' ' '))
-          scenario=0
+          declare -i scenario=0
           for dir in "${directories[@]}"; do
             if [[ "$dir" == "frontend" ]]; then
-                scenario+=1
+                scenario=scenario+1
             fi
             if [[ "$dir" == "backend" ]]; then
-                scenario+=2
+                scenario=scenario+2
             fi
           done
           echo "scenario=$scenario" >> $GITHUB_OUTPUT
