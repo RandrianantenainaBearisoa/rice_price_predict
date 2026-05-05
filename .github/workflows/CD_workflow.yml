@@ -1,4 +1,4 @@
-name: Constant Delivery Workflow
+name: Continuous Delivery Workflow
 
 on:
   push:
@@ -6,11 +6,10 @@ on:
       - prod
 
 jobs:
-  Deploy:
+  Check_what_to_do:
     runs-on: ubuntu-latest
     steps:
-      - name: Check pwd
-        run: pwd
-      - name: Check ls
-        run: ls
-  
+      - uses: actions/checkout@v3
+
+      - name: Check what to do
+        run: git diff --name-only | cut -d/ -f1 | uniq
