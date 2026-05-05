@@ -20,4 +20,4 @@ jobs:
         #   for file in ${{ steps.changed-files.outputs.modified_files }}; do
         #     echo "$file was modified"
         #   done
-        run: echo ${{ steps.changed-files.outputs.modified_files | cut -d'/' -f1 | sort -u }}
+        run: echo ${{ steps.changed-files.outputs.modified_files}}
