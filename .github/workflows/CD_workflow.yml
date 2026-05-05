@@ -40,7 +40,7 @@ jobs:
         builds: ["0", "frontend", "backend", ""]
     needs: Check_what_to_do
     runs-on: ubuntu-latest
-    if: needs.Check_what_to_do.outputs.scenario != '0'
+    if: needs.Check_what_to_do.outputs.scenario != 0
     steps:
       - uses: actions/checkout@v3
 
