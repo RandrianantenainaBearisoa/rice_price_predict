@@ -40,8 +40,6 @@ jobs:
         builds: ["0", "frontend", "backend", ""]
     needs: Check_what_to_do
     runs-on: ubuntu-latest
-    env:
-      KEY: ${{ needs.Check_what_to_do.outputs.scenario }}
     if: needs.Check_what_to_do.outputs.scenario != '0'
     steps:
       - uses: actions/checkout@v3
@@ -54,6 +52,6 @@ jobs:
       
       - name: Build and Push Image
         run: |
-          Service="${{ fromJSON('{"0":"0", "1":"frontend", "2":"backend", "3":""}')[$KEY] }}"
+          Service="${{ fromJSON('{"0":"0", "1":"frontend", "2":"backend", "3":""}')[${{ needs.Check_what_to_do.outputs.scenario }}] }}"
           echo "$Service"
           echo "docker compose build $Service && docker compose push $Service"
