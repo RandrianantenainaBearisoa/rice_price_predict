@@ -13,8 +13,9 @@ jobs:
 
       - name: Check what to do
         # run: git diff --name-only | cut -d/ -f1 | uniq
-        run: |
-          DIFF=$(git diff --name-only | cut -d/ -f1 | uniq)
+        # run: |
+        #   DIFF=$(git diff --name-only | cut -d/ -f1 | uniq)
           
-          echo "Voici les dossiers modifiés :"
-          echo "$DIFF"
+        #   echo "Voici les dossiers modifiés :"
+        #   echo "$DIFF"
+        run: git diff --name-only --diff-filter=M ${{ github.event.before }} ${{ github.event.after }}
