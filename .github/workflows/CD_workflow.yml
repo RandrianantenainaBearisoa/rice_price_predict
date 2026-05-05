@@ -55,14 +55,24 @@ jobs:
           case ${{ needs.Check_what_to_do.outputs.scenario }} in
             1)
               echo "Only frontend changed. Building and pushing frontend image..."
+              docker compose build frontend && docker compose push frontend
               ;;
             2)
               echo "Only backend changed. Building and pushing backend image..."
+              docker compose build backend && docker compose push backend
               ;;
             3)
               echo "Both frontend and backend changed. Building and pushing both images..."
+              docker compose build && docker compose push
               ;;
             *)
               echo "No changes detected. Skipping build and push."
               ;;
           esac
+  Deploy:
+    needs: Build_and_Push
+    runs-on: vm-prod
+    if: needs.Build_and_Push.result == 'success'
+    steps:
+      - name: Deploy to Production Server
+        run: $HOME/rice-price-predict/deploy.sh
