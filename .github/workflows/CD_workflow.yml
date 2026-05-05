@@ -8,6 +8,8 @@ on:
 jobs:
   Check_what_to_do:
     runs-on: ubuntu-latest
+    outputs:
+      scenario: ${{ steps.get-scenario.outputs.scenario }}
     steps:
       - uses: actions/checkout@v3
 
@@ -16,6 +18,7 @@ jobs:
         uses: tj-actions/changed-files@v44
 
       - name: List modified files
+        id: get-scenario
         run: |
           modified=()
           for file in ${{ steps.changed-files.outputs.modified_files}}; do
@@ -35,9 +38,6 @@ jobs:
           echo "scenario=$scenario" >> $GITHUB_OUTPUT
           echo "Scenario: $scenario"
   Build_and_Push:
-    strategy:
-      matrix:
-        builds: ["0", "frontend", "backend", ""]
     needs: Check_what_to_do
     runs-on: ubuntu-latest
     if: needs.Check_what_to_do.outputs.scenario != 0
