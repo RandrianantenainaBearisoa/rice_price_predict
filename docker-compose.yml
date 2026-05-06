@@ -2,7 +2,9 @@ services:
   backend:
     build: 
       context: ./backend
-    image: bearisoa/rice-price-pred-backend
+      tags:
+        - bearisoa/rice-price-pred-backend:1.0.0
+    image: bearisoa/rice-price-pred-backend:latest
     container_name: backend
     expose:
       - "8000"
@@ -11,9 +13,11 @@ services:
   frontend:
     build: 
       context: ./frontend
+      tags:
+        - bearisoa/rice-price-pred-frontend:1.0.0
       args:
         VITE_API_URL: /api
-    image: bearisoa/rice-price-pred-frontend
+    image: bearisoa/rice-price-pred-frontend:latest
     container_name: frontend-n-proxy
     ports:
       - "80:80"
