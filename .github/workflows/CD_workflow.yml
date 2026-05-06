@@ -4,6 +4,15 @@ on:
   push:
     branches:
       - prod
+    paths-ignore:
+      - '**.dockerignore'
+      - '**.gitignore'
+      - '**.md'
+      - explorations/
+      - tests/
+      - main.py
+      - run_mlflow.sh
+      - src/core/pipeline/
 
 jobs:
   Check_what_to_do:
