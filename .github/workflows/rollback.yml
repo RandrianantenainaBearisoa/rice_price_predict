@@ -8,7 +8,4 @@ jobs:
     runs-on: vm-prod
     steps:
       - name: Tell the server to rollback.
-        # run: $HOME/rice-price-predict/rollback.sh
-        run: |
-          echo "$(pwd)"
-          echo "$HOME"
+        run: $HOME/rice-price-predict/rollback.sh
