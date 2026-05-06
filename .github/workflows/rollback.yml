@@ -8,5 +8,8 @@ jobs:
     runs-on: vm-prod
     steps:
       - name: Tell the server to rollback.
-        run: echo $HOME
-        # $HOME/rice-price-predict/rollback.sh
+        # echo $HOME/rice-price-predict/rollback.sh
+        run: |
+          if [ -f "$HOME/rice-price-predict/rollback.sh" ]; then
+              echo "File exists."
+          fi
