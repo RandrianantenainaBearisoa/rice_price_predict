@@ -1,0 +1,11 @@
+name: Rollback to a Stable tagged Version # requires a tag to be created in the registry beforehand
+
+on:
+  workflow_dispatch:
+
+jobs:
+  Rollback:
+    runs-on: vm-prod
+    steps:
+      - name: Tell the server to rollback.
+        run: $HOME/rice-price-predict/rollback.sh

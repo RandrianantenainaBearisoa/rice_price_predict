@@ -1,0 +1,11 @@
+name: Manual Deployment to Production
+
+on:
+  workflow_dispatch:
+
+jobs:
+  Deploy:
+    runs-on: vm-prod
+    steps:
+      - name: Deploy to Production Server
+        run: $HOME/rice-price-predict/deploy.sh
