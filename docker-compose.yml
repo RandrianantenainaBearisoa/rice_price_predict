@@ -14,7 +14,7 @@ services:
     build: 
       context: ./frontend
       tags:
-        - bearisoa/rice-price-pred-frontend:1.0.2
+        - bearisoa/rice-price-pred-frontend:1.0.3
       args:
         VITE_API_URL: /api
     image: bearisoa/rice-price-pred-frontend:latest
