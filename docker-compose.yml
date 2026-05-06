@@ -2,8 +2,8 @@ services:
   backend:
     build: 
       context: ./backend
-      tags:
-        - bearisoa/rice-price-pred-backend:1.0.0
+      # tags:
+      #   - bearisoa/rice-price-pred-backend:1.0.0
     image: bearisoa/rice-price-pred-backend:latest
     container_name: backend
     expose:
@@ -13,8 +13,8 @@ services:
   frontend:
     build: 
       context: ./frontend
-      tags:
-        - bearisoa/rice-price-pred-frontend:1.0.0
+      # tags:
+      #   - bearisoa/rice-price-pred-frontend:1.0.0
       args:
         VITE_API_URL: /api
     image: bearisoa/rice-price-pred-frontend:latest
