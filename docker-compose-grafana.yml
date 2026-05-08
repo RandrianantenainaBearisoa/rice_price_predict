@@ -12,3 +12,7 @@ services:
 
 volumes:
   grafana_data:
+
+networks:
+  prometheus_monitoring:
+    external: true
