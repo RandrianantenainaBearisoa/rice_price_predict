@@ -22,6 +22,15 @@ services:
     depends_on:
     - backend
 
+  nginx-exporter:
+    image: nginx/nginx-prometheus-exporter:latest
+    networks:
+      - prometheus_monitoring
+    command:
+      - -nginx.scrape-uri=http://frontend-n-proxy:8081/metrics
+    depends_on:
+      - nginx
+
 networks:
   default:
   prometheus_monitoring:
