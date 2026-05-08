@@ -28,8 +28,12 @@ services:
       - prometheus_monitoring
     command:
       - -nginx.scrape-uri=http://frontend-n-proxy:8081/metrics
+    container_name: nginx-exporter
+    ports:
+      - "9113:9113"
+    restart: always
     depends_on:
-      - nginx
+      - frontend
 
 networks:
   default:
