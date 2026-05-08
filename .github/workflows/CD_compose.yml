@@ -1,0 +1,16 @@
+name: Docker Compose Updated - re-Build&Push&Deploy images
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'docker-compose.yml'
+      - 'docker-compose.prod.yml'
+
+jobs:
+  Build_and_Push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: echo "Checking out code..." # --- IGNORE ---
