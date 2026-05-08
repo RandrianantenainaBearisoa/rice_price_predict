@@ -32,7 +32,7 @@ jobs:
     steps:
       - name: Update Production Compose File on Server
         run: |
-          curl -o $HOME/rice-price-predict/docker-compose.yml https://raw.githubusercontent.com/RandrianantenainaBearisoa/rice_price_predict/refs/heads/main/docker-compose.prod.yml
+          curl -o $HOME/rice-price-predict/docker-compose.yml https://raw.githubusercontent.com/RandrianantenainaBearisoa/rice_price_predict/refs/heads/main/docker-compose.prod.yml && ls $HOME/rice-price-predict/
   Deploy:
     needs: Update_prod_Compose
     runs-on: vm-prod
