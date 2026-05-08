@@ -1,4 +1,4 @@
-name: Docker Compose Updated - re-Build&Push&Deploy images
+name: Docker Compose Updated # so re-Build&Push&Deploy images
 
 on:
   push:
