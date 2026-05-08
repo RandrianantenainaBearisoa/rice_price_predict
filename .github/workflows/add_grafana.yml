@@ -1,0 +1,16 @@
+name: Add grafana to prometheus monitoring
+
+on:
+  workflow_dispatch:
+
+jobs:
+  Add_grafana:
+    runs-on: vm-prod
+    steps:
+      - name: Download Grafana Compose File
+        run: |
+          curl -o $HOME/grafana/docker-compose.yml https://raw.githubusercontent.com/RandrianantenainaBearisoa/rice_price_predict/refs/heads/main/docker-compose-grafana.yml
+      - name: Deploy Grafana
+        run: |
+          cd $HOME/grafana
+          docker compose up -d
