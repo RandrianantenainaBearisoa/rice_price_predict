@@ -2,6 +2,11 @@ name: Add grafana to prometheus monitoring
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - 'docker-compose-grafana.yml'
 
 jobs:
   Add_grafana:
