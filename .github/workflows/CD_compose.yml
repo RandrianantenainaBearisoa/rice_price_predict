@@ -13,4 +13,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: echo "Checking out code..." # --- IGNORE ---
+        run: echo "Checking out code..." # --- IGNORE ---
