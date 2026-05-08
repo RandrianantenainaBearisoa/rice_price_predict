@@ -1,6 +1,9 @@
 services:
   backend:
     image: bearisoa/rice-price-pred-backend:latest
+    networks:
+      - default
+      - prometheus_monitoring
     container_name: backend
     expose:
       - "8000"
@@ -8,9 +11,13 @@ services:
   
   frontend:
     image: bearisoa/rice-price-pred-frontend:latest
+    networks:
+      - default
+      - prometheus_monitoring
     container_name: frontend-n-proxy
     ports:
       - "80:80"
+      - "8081:8081"
     restart: always
     depends_on:
     - backend
