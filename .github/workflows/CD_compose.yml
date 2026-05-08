@@ -27,12 +27,14 @@ jobs:
           echo "Pushing images..."
           docker compose push
   Update_prod_Compose:
+    needs: Build_and_Push
     runs-on: vm-prod
     steps:
       - name: Update Production Compose File on Server
         run: |
           curl -o $HOME/rice-price-predict/docker-compose.yml https://raw.githubusercontent.com/RandrianantenainaBearisoa/rice_price_predict/refs/heads/main/docker-compose.prod.yml
   Deploy:
+    needs: Update_prod_Compose
     runs-on: vm-prod
     steps:
       - name: Deploy to Production Server
