@@ -38,4 +38,4 @@ services:
 networks:
   default:
   prometheus_monitoring:
-    external: true
+    external: true 
