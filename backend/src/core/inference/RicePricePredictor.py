@@ -1,6 +1,7 @@
 from src.core.inference.preprocessing import preprocess_input
 from src.core.inference.postprocessing import post_process_result
 from src.core.inference.schemas import InferenceInput
+from src.core.inference.WrappedException import WrappedException
 from pathlib import Path
 import pickle
 
@@ -17,8 +18,17 @@ class RicePricePredictor():
         return cls._model
     
     def predict(self, entry: InferenceInput):
-        model = self.get_model()
+        try:
+            model = self.get_model()
+        except Exception as e:
+            raise WrappedException(original_exception=e, exception_location="RicePricePredictor.get_model") from e
+        
         X = preprocess_input(entry)
-        y_pred = model.predict(X)
+
+        try:
+            y_pred = model.predict(X)
+        except Exception as e:
+            raise WrappedException(original_exception=e, exception_location="Prediction function (model.predict())", entry=X) from e
+        
         predicted_price = post_process_result(y_pred)
-        return predicted_price
+        return predicted_price, X, y_pred[0], 
