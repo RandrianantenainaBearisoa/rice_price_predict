@@ -9,9 +9,10 @@ jobs:
     steps:
       - name: Download promtail and loki Config files
         run: |
-          wget https://github.com/RandrianantenainaBearisoa/rice_price_predict/raw/refs/heads/main/loki-config.yaml
-          wget https://github.com/RandrianantenainaBearisoa/rice_price_predict/raw/refs/heads/main/promtail-config.yaml
-          wget https://github.com/RandrianantenainaBearisoa/rice_price_predict/raw/refs/heads/main/docker-compose-loki-promtail.yml
+          cd $HOME/loki-promtail
+          wget https://github.com/RandrianantenainaBearisoa/rice_price_predict/raw/refs/heads/main/loki-config.yaml -O loki-config.yaml
+          wget https://github.com/RandrianantenainaBearisoa/rice_price_predict/raw/refs/heads/main/promtail-config.yaml -O promtail-config.yaml
+          wget https://github.com/RandrianantenainaBearisoa/rice_price_predict/raw/refs/heads/main/docker-compose-loki-promtail.yml -O docker-compose.yml
       - name: Run docker compose
         run: |
           cd $HOME/loki-promtail
