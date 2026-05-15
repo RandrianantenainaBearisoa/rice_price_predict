@@ -4,7 +4,7 @@ import logging
 import json
 import traceback
 import math
-from jsonschema import ValidationError
+from pydantic import ValidationError
 from fastapi import FastAPI, Request, HTTPException, status, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from src.core.inference.schemas import InferenceInput
@@ -27,7 +27,7 @@ app.add_middleware(
 predictor = RicePricePredictor()
 
 # Basic configuration to see output in console
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.INFO, format='\n%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
 @app.get("/features")
 async def get_features(request: Request):
@@ -106,8 +106,22 @@ async def predict(request: Request, entry: InferenceInput):
             detail=e.__str__()
         )
     except ValueError as e:
+        log_data['error'] = e.__str__()
         logging.error(json.dumps(log_data))
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=str(e)
+        )
+    except Exception as e:
+        log_data = {
+            "request_id": request_id,
+            "raw_input": raw_input,
+            "validated_input": entry.dict(),
+            "error": e.__str__(),
+            "traceback": traceback.format_exc(),
+        }
+        logging.error(json.dumps(log_data))
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=str(e)
         )
