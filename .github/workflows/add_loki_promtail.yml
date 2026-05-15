@@ -9,6 +9,7 @@ jobs:
     steps:
       - name: Download promtail and loki Config files
         run: |
+          rm $HOME/loki-promtail/* -f
           cd $HOME/loki-promtail
           wget https://github.com/RandrianantenainaBearisoa/rice_price_predict/raw/refs/heads/main/loki-config.yaml -O loki-config.yaml
           wget https://github.com/RandrianantenainaBearisoa/rice_price_predict/raw/refs/heads/main/promtail-config.yaml -O promtail-config.yaml
