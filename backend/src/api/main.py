@@ -10,6 +10,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from src.core.inference.schemas import InferenceInput
 from src.core.inference.RicePricePredictor import RicePricePredictor
 from src.core.inference.WrappedException import WrappedException
+from src.api.JsonFormatter import JsonFormatter
 
 
 app = FastAPI()
@@ -27,7 +28,15 @@ app.add_middleware(
 predictor = RicePricePredictor()
 
 # Basic configuration to see output in console
-logging.basicConfig(level=logging.INFO, format='\n%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+# logging.basicConfig(level=logging.INFO, format='\n%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+# logging.basicConfig(level=logging.INFO, format='%(message)s')
+
+handler = logging.StreamHandler()
+handler.setFormatter(JsonFormatter())
+
+root_logger = logging.getLogger()
+root_logger.addHandler(handler)
+root_logger.setLevel(logging.INFO)
 
 @app.get("/features")
 async def get_features(request: Request):
