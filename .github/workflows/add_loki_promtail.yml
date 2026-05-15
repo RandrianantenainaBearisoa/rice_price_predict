@@ -1,0 +1,18 @@
+name: Add loki and promtail to prometheus monitoring.
+
+on:
+  workflow_dispatch:
+
+jobs:
+  Add_loki_n_promtail:
+    runs-on: vm-prod
+    steps:
+      - name: Download promtail and loki Config files
+        run: |
+          curl -o $HOME/loki-promtail/loki-config.yaml https://github.com/RandrianantenainaBearisoa/rice_price_predict/raw/refs/heads/main/loki-config.yaml
+          curl -o $HOME/loki-promtail/promtail-config.yaml https://github.com/RandrianantenainaBearisoa/rice_price_predict/raw/refs/heads/main/promtail-config.yaml
+          curl -o $HOME/loki-promtail/docker-compose.yml https://github.com/RandrianantenainaBearisoa/rice_price_predict/raw/refs/heads/main/docker-compose-loki-promtail.yml
+      - name: Run docker compose
+        run: |
+          cd $HOME/loki-promtail
+          docker compose up -d
